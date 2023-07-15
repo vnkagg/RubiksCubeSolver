@@ -26,7 +26,7 @@ bool buildCornerDB::bfsAndStore() {
     while (!q.empty()) {
         int n = q.size();
         curr_depth++;
-        if (curr_depth == 9) break;
+        if (curr_depth == 12) break;
         for (int counter = 0; counter < n; counter++) {
             bitBoard node = q.front();
             q.pop();

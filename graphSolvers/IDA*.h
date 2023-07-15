@@ -8,10 +8,12 @@
 #include "../Model/RubiksCube.h"
 #include "unordered_map"
 #include "queue"
+#include "../codeBaseDB/cornerPatternDB.h"
 
 template<typename T, typename H>
 class IDA{
 private:
+    cornerPatternDB cornerDB;
     unordered_map<T, RubiksCube::MOVE, H> howHere;
     unordered_map<T, bool, H> visited;
     void reset(){
@@ -34,7 +36,7 @@ private:
     };
     pair<T, int> ida(int bound){
         priority_queue<Node, vector<Node>, compareCubeForPQ> pq;
-        Node inputCube = Node(cube, 0, 0);
+        Node inputCube = Node(cube, 0, cornerDB.getNumMoves(cube));
         pq.push(inputCube);
         int next_bound = INT_MAX;
         while(!pq.empty()){
@@ -53,7 +55,7 @@ private:
                 auto currentMove = RubiksCube::MOVE(i);
                 node.cube.move(currentMove);
                 if(!visited[node.cube]){
-                    node.heuristic = 0;
+                    node.heuristic = cornerDB.getNumMoves(node.cube);
                     if(node.heuristic + node.depth > bound){
                         next_bound = min(next_bound, node.heuristic + node.depth);
                     } else {
@@ -69,8 +71,9 @@ private:
     }
 public:
     T cube;
-    IDA(T _cube){
+    IDA(T _cube, string _fileName){
         cube = _cube;
+        cornerDB.fromFile(_fileName);
     }
     vector<RubiksCube::MOVE> solution;
     vector<RubiksCube::MOVE> solve(){

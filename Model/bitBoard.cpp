@@ -102,10 +102,10 @@ public:
     RubiksCube& uPrime() override{
         this->u();
         this->u();
+        this->u();
         return *this;
     }
     RubiksCube& u2() override{
-        this->u();
         this->u();
         this->u();
         return *this;
