@@ -27,7 +27,9 @@ private:
         Node(T _cube, int _depth, int _heuristic) : cube(_cube), depth(_depth), heuristic(_heuristic) {};
     };
     struct compareCubeForPQ{
-        bool operator()(Node &n1, Node &n2){
+        bool operator()(pair<Node, int> &p1, pair<Node, int> &p2){
+            auto n1 = p1.first;
+            auto n2 = p2.first;
             return
                 n1.depth + n1.heuristic == n2.depth + n2.heuristic ?
                     n2.heuristic > n2.heuristic                                :
@@ -35,12 +37,13 @@ private:
         }
     };
     pair<T, int> ida(int bound){
-        priority_queue<Node, vector<Node>, compareCubeForPQ> pq;
+        priority_queue<pair<Node, int> , vector<pair<Node, int>>, compareCubeForPQ> pq;
         Node inputCube = Node(cube, 0, cornerDB.getNumMoves(cube));
-        pq.push(inputCube);
+        pq.push(make_pair(inputCube, 18));
         int next_bound = INT_MAX;
         while(!pq.empty()){
-            Node node = pq.top();
+            Node node = pq.top().first;
+            int lastMovePerformed = pq.top().second;
             pq.pop();
             if(visited[node.cube]){
                 // implement logic for shorter path update here
@@ -51,7 +54,11 @@ private:
                 return make_pair(node.cube, bound);
             }
             node.depth++;
+            int a = (lastMovePerformed/3)*3; int b = a + 2;
             for(int i = 0; i < 18; i++){
+                if(a <= i && i <= b){
+                    continue;
+                }
                 auto currentMove = RubiksCube::MOVE(i);
                 node.cube.move(currentMove);
                 if(!visited[node.cube]){
@@ -60,7 +67,7 @@ private:
                         next_bound = min(next_bound, node.heuristic + node.depth);
                     } else {
                         howHere[node.cube] = currentMove;
-                        pq.push(node);
+                        pq.push(make_pair(node, i));
                     }
                 }
                 node.cube.invert(currentMove);

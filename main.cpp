@@ -28,8 +28,7 @@ int main()
 //    DFS<bitBoard> mySolver(cube, searchDepth);
 //    BFS<bitBoard, HashbitCube> mySolver(cube);
 //    IDDFS<bitBoard, HashbitCube> mySolver(cube, searchDepth);
-    IDA<bitBoard, HashbitCube> mySolver(cube,
-                                        "/Users/vinayak/Desktop/my-projects/RubiksCubeSolver/heuristicsDepth9.txt");
+    IDA<bitBoard, HashbitCube> mySolver(cube,"/Users/vinayak/Desktop/my-projects/RubiksCubeSolver/heuristicsDepth9.txt");
 
 //    DFS<Model3D> mySolver(cube, searchDepth);
 //    BFS<Model3D, Hash3d> mySolver(cube);
@@ -44,7 +43,7 @@ int main()
         cout << RubiksCube::getMove(move) << " ";
     }
 
-//    buildCornerDB attempt2("/Users/vinayak/Desktop/my-projects/RubiksCubeSolver/heuristicsDepth=12");
+//    buildCornerDB attempt2("/Users/vinayak/Desktop/my-projects/RubiksCubeSolver/heuristicsDepth=12.txt");
 //    attempt2.bfsAndStore();
     return 0;
 }
